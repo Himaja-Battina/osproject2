@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    stages {
+        stage('Deploy Application') {
+            steps {
+                // Configure OpenShift cluster credentials
+                withCredentials([string(credentialsId: 'openshift-cluster-url-1', variable: 'OPENSHIFT_CLUSTER_URL_1'),
+                                  string(credentialsId: 'openshift-cluster-username-1', variable: 'OPENSHIFT_CLUSTER_USERNAME_1'),
+                                  string(credentialsId: 'openshift-cluster-password-1', variable: 'OPENSHIFT_CLUSTER_PASSWORD_1'),
+                                  string(credentialsId: 'openshift-cluster-url-2', variable: 'OPENSHIFT_CLUSTER_URL_2'),
+                                  string(credentialsId: 'openshift-cluster-username-2', variable: 'OPENSHIFT_CLUSTER_USERNAME_2'),
+                                  string(credentialsId: 'openshift-cluster-password-2', variable: 'OPENSHIFT_CLUSTER_PASSWORD_2')]) {
+                    // Configure RHACM credentials
+                    //withCredentials([string(credentialsId: 'rhacm-server-url', variable: 'RHACM_SERVER_URL'),
+                                     // string(credentialsId: 'rhacm-auth-token', variable: 'RHACM_AUTH_TOKEN')]) {
+                        // Login to OpenShift cluster 1
+                        sh "oc login ${OPENSHIFT_CLUSTER_URL_1} -u ${OPENSHIFT_CLUSTER_USERNAME_1} -p ${OPENSHIFT_CLUSTER_PASSWORD_1} --insecure-skip-tls-verify=true"
+                        // Deploy application to OpenShift cluster 1
+                        try {
+                            sh "oc apply -f application-deployment.yaml"
+                            // Break out of loop if deployment is successful
+                            break
+                        } catch (Exception e) {
+                            // Log error and continue to next cluster
+                            echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
+                        }
+                        // Login to OpenShift cluster 2
+                        sh "oc login ${OPENSHIFT_CLUSTER_URL_2} -u ${OPENSHIFT_CLUSTER_USERNAME_2} -p ${OPENSHIFT_CLUSTER_PASSWORD_2} --insecure-skip-tls-verify=true"
+                        // Deploy application to OpenShift cluster 2
+                        try {
+                            sh "oc apply -f application-deployment.yaml"
+                            // Break out of loop if deployment is successful
+                            break
+                        } catch (Exception e) {
+                            // Log error and continue to next cluster
+                            echo "Deployment failed on OpenShift cluster 2. Error: ${e}"
+                        }
+                        // Log error if deployment fails on all clusters
+                        echo "Deployment failed on all OpenShift clusters."
+                    //}
+                }
+            }
+        }
+    }
+}
