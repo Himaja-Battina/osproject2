@@ -34,7 +34,9 @@ pipeline {
                         }
                     stage('deploy to cluster2'){
                         when{
+                            anyOf{
                             failed()
+                            }
                         }
                         // Deploy application to OpenShift cluster 2
                         steps{
