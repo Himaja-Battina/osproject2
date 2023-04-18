@@ -35,7 +35,7 @@ pipeline {
                     stage('deploy to cluster2'){
                     when{
                        anyOf {
-            failed()
+            
             environment name: 'DEPLOY_ON_FAILURE', value: 'true'
         }
         }
