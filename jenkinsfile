@@ -9,9 +9,7 @@ pipeline {
                                  
                                   string(credentialsId: 'openshift-cluster-url-2', variable: 'OPENSHIFT_CLUSTER_URL_2'),
                                   string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
-                    // Configure RHACM credentials
-                    //withCredentials([string(credentialsId: 'rhacm-server-url', variable: 'RHACM_SERVER_URL'),
-                                     // string(credentialsId: 'rhacm-auth-token', variable: 'RHACM_AUTH_TOKEN')]) {
+                    
                         // Login to OpenShift cluster 1
                         script{
                        
