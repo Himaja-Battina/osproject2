@@ -5,11 +5,10 @@ pipeline {
             steps {
                 // Configure OpenShift cluster credentials
                 withCredentials([string(credentialsId: 'openshift-cluster-url-1', variable: 'OPENSHIFT_CLUSTER_URL_1'),
-                                  string(credentialsId: 'openshift-cluster-username-1', variable: 'OPENSHIFT_CLUSTER_USERNAME_1'),
-                                  string(credentialsId: 'openshift-cluster-password-1', variable: 'OPENSHIFT_CLUSTER_PASSWORD_1'),
+                                  string(credentialsId: 'openshift-cluster-token-1', variable: 'OPENSHIFT_CLUSTER_TOKEN_1'),
+                                 
                                   string(credentialsId: 'openshift-cluster-url-2', variable: 'OPENSHIFT_CLUSTER_URL_2'),
-                                  string(credentialsId: 'openshift-cluster-username-2', variable: 'OPENSHIFT_CLUSTER_USERNAME_2'),
-                                  string(credentialsId: 'openshift-cluster-password-2', variable: 'OPENSHIFT_CLUSTER_PASSWORD_2')]) {
+                                  string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
                     // Configure RHACM credentials
                     //withCredentials([string(credentialsId: 'rhacm-server-url', variable: 'RHACM_SERVER_URL'),
                                      // string(credentialsId: 'rhacm-auth-token', variable: 'RHACM_AUTH_TOKEN')]) {
