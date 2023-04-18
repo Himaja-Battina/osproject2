@@ -33,9 +33,12 @@ pipeline {
                         // Login to OpenShift cluster 2
                         }
                     stage('deploy to cluster2'){
-                        when{
-                            failed()
-                              }
+                    when{
+                       anyOf {
+            failed()
+            environment name: 'DEPLOY_ON_FAILURE', value: 'true'
+        }
+        }
                         // Deploy application to OpenShift cluster 2
                         steps{
                             script{
