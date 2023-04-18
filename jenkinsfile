@@ -11,8 +11,9 @@ pipeline {
                                   string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
                     
                         // Login to OpenShift cluster 1
-                        for(;;){
                         script{
+                        for(;;){
+                        
                        
                         // Deploy application to OpenShift cluster 1
                         try {
@@ -28,7 +29,7 @@ pipeline {
                         }
                         }
                         // Login to OpenShift cluster 2
-                        script{
+                        
                           
                         // Deploy application to OpenShift cluster 2
                         try {
@@ -49,5 +50,4 @@ pipeline {
             }
         }
     }
-}
 }
