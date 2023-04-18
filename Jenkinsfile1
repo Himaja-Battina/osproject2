@@ -33,11 +33,7 @@ pipeline {
             post{
                 failure{
                     stage('deploy to cluster2'){
-                        when{
-                            
-                            failed()
-                            
-                        }
+                      
                         // Deploy application to OpenShift cluster 2
                         steps{
                             script{
