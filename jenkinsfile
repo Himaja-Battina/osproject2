@@ -11,7 +11,7 @@ pipeline {
                                   string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
                     
                         // Login to OpenShift cluster 1
-                        script{
+                        
                         for(;;){
                         
                        
@@ -45,7 +45,7 @@ pipeline {
                         // Log error if deployment fails on all clusters
                         echo "Deployment failed on all OpenShift clusters."
                         }
-                    }
+                    
                 }
             }
         }
