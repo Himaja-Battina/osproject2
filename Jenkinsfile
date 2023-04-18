@@ -22,7 +22,7 @@ pipeline {
                             sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN project newprojectyx --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
                         
                             // Break out of loop if deployment is successful
-                            break
+                            exit 0
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
@@ -37,7 +37,7 @@ pipeline {
                            sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project newprojectx --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
                        
                             // Break out of loop if deployment is successful
-                            break
+                            exit 0
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 2. Error: ${e}"
