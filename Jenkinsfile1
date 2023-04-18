@@ -42,7 +42,7 @@ pipeline {
                         try {
                                              
     def contextName = null
-    sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 config get-contexts -o name | while read -r line; do if [[ \"\${line}\" == *$OPENSHIFT_CLUSTER_URL_2* ]]; then contextName=\${line}; fi; done"
+    sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 config get-contexts -o name | while read -r line; do if [[ \"\${line}\" == *$OPENSHIFT_CLUSTER_URL_2* ]]; then contextName=\${line}; fi; done'
     contextName = contextName.replaceAll("\\/${OPENSHIFT_CLUSTER_URL_2}.*", "")
     echo $contextName
                          sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 && CLUSTER_NAME=$(oc config current-context | cut -d: -f1) && echo Cluster Name: $CLUSTER_NAME && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 new-project newprojectx --insecure-skip-tls-verify'
