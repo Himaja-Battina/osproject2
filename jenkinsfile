@@ -4,8 +4,8 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 // Configure OpenShift cluster credentials
-                withCredentials([string(credentialsId: 'openshift-cluster-url-1', variable: 'OPENSHIFT_CLUSTER_URL_1'),
-                                  string(credentialsId: 'openshift-cluster-token-1', variable: 'OPENSHIFT_CLUSTER_TOKEN_1'),
+                withCredentials([string(credentialsId: 'ocp-server-url', variable: 'OCP_SERVER_URL'),
+                                  string(credentialsId: 'cluster-auth-token', variable: 'CLUSTER_AUTH_TOKEN'),
                                  
                                   string(credentialsId: 'openshift-cluster-url-2', variable: 'OPENSHIFT_CLUSTER_URL_2'),
                                   string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
