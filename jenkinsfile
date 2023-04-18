@@ -11,6 +11,7 @@ pipeline {
                                   string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
                     
                         // Login to OpenShift cluster 1
+                        
                         script{
                        
                         // Deploy application to OpenShift cluster 1
@@ -20,7 +21,7 @@ pipeline {
                             sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN project newprojectxy --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
                         
                             // Break out of loop if deployment is successful
-                            return
+                            sh 'exit 0'
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
@@ -35,7 +36,7 @@ pipeline {
                            sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project newprojectx --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
                        
                             // Break out of loop if deployment is successful
-                            return
+                            sh 'exit 0'
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 2. Error: ${e}"
