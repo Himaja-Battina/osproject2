@@ -10,12 +10,7 @@ pipeline {
                         script{
                         // Deploy application to OpenShift cluster 1
                         try {
-                       
-    def contextName = null
-    sh "oc --server=${serverUrl} --token=${authToken} config use-context default"
-    sh "oc --server=${serverUrl} --token=${authToken} config get-contexts -o name | while read -r line; do if [[ \"\${line}\" == *${serverUrl}* ]]; then contextName=\${line}; fi; done"
-    contextName = contextName.replaceAll("\\/${serverUrl}.*", "")
-    echo $contextName
+  
 
                         sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN && CLUSTER_NAME=$(oc config current-context | cut -d: -f1) && echo Cluster Name: $CLUSTER_NAME && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN new-project newprojectg --insecure-skip-tls-verify'
                             sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN project newprojectg --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
@@ -45,6 +40,12 @@ pipeline {
                                   string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
                             script{
                         try {
+                                             
+    def contextName = null
+    sh "oc --server=${OPENSHIFT_CLUSTER_URL_2} --token=${OPENSHIFT_CLUSTER_TOKEN_2} config use-context default"
+    sh "oc --server=${OPENSHIFT_CLUSTER_URL_2} --token=${OPENSHIFT_CLUSTER_TOKEN_2} config get-contexts -o name | while read -r line; do if [[ \"\${line}\" == *${OPENSHIFT_CLUSTER_URL_2}* ]]; then contextName=\${line}; fi; done"
+    contextName = contextName.replaceAll("\\/${OPENSHIFT_CLUSTER_URL_2}.*", "")
+    echo $contextName
                          sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 && CLUSTER_NAME=$(oc config current-context | cut -d: -f1) && echo Cluster Name: $CLUSTER_NAME && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 new-project newprojectx --insecure-skip-tls-verify'
                            sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project newprojectx --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
                             // Break out of loop if deployment is successful
