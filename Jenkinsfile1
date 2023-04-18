@@ -33,6 +33,9 @@ pipeline {
         }
                         // Deploy application to OpenShift cluster 2
                         steps{
+                        
+                                  withCredentials([string(credentialsId: 'openshift-cluster-url-2', variable: 'OPENSHIFT_CLUSTER_URL_2'),
+                                  string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
                             script{
                         try {
                          sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 && CLUSTER_NAME=$(oc config current-context | cut -d: -f1) && echo Cluster Name: $CLUSTER_NAME && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 new-project newprojectx --insecure-skip-tls-verify'
@@ -46,6 +49,7 @@ pipeline {
                         
                         }
                         }
+                }
                 }
                 }
             }
