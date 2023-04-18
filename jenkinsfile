@@ -13,10 +13,10 @@ pipeline {
                     //withCredentials([string(credentialsId: 'rhacm-server-url', variable: 'RHACM_SERVER_URL'),
                                      // string(credentialsId: 'rhacm-auth-token', variable: 'RHACM_AUTH_TOKEN')]) {
                         // Login to OpenShift cluster 1
-                        sh "oc login ${OPENSHIFT_CLUSTER_URL_1} -u ${OPENSHIFT_CLUSTER_USERNAME_1} -p ${OPENSHIFT_CLUSTER_PASSWORD_1} --insecure-skip-tls-verify=true"
+                       sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN new-project newprojecty --insecure-skip-tls-verify'
                         // Deploy application to OpenShift cluster 1
                         try {
-                            sh "oc apply -f application-deployment.yaml"
+                            sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN project newprojecty --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
                             // Break out of loop if deployment is successful
                             break
                         } catch (Exception e) {
@@ -24,10 +24,10 @@ pipeline {
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
                         }
                         // Login to OpenShift cluster 2
-                        sh "oc login ${OPENSHIFT_CLUSTER_URL_2} -u ${OPENSHIFT_CLUSTER_USERNAME_2} -p ${OPENSHIFT_CLUSTER_PASSWORD_2} --insecure-skip-tls-verify=true"
+                          sh 'oc --server=$OCP_SERVER_URL2 --token=$CLUSTER_AUTH_TOKEN2 new-project newprojecty --insecure-skip-tls-verify'
                         // Deploy application to OpenShift cluster 2
                         try {
-                            sh "oc apply -f application-deployment.yaml"
+                           sh 'oc --server=$OCP_SERVER_URL2 --token=$CLUSTER_AUTH_TOKEN2 project newprojecty --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL2 --token=$CLUSTER_AUTH_TOKEN2 apply -f application-deployment.yaml'
                             // Break out of loop if deployment is successful
                             break
                         } catch (Exception e) {
