@@ -27,7 +27,7 @@ pipeline {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
                         }
-                        }
+                        
                         // Login to OpenShift cluster 2
                         
                           
@@ -45,7 +45,7 @@ pipeline {
                         // Log error if deployment fails on all clusters
                         echo "Deployment failed on all OpenShift clusters."
                         }
-                    //}
+                    }
                 }
             }
         }
