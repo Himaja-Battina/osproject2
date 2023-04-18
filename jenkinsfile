@@ -13,6 +13,7 @@ pipeline {
                     //withCredentials([string(credentialsId: 'rhacm-server-url', variable: 'RHACM_SERVER_URL'),
                                      // string(credentialsId: 'rhacm-auth-token', variable: 'RHACM_AUTH_TOKEN')]) {
                         // Login to OpenShift cluster 1
+                        script{
                        sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN new-project newprojecty --insecure-skip-tls-verify'
                         // Deploy application to OpenShift cluster 1
                         try {
@@ -23,7 +24,9 @@ pipeline {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
                         }
+                        }
                         // Login to OpenShift cluster 2
+                        script{
                           sh 'oc --server=$OCP_SERVER_URL2 --token=$CLUSTER_AUTH_TOKEN2 new-project newprojecty --insecure-skip-tls-verify'
                         // Deploy application to OpenShift cluster 2
                         try {
@@ -36,6 +39,7 @@ pipeline {
                         }
                         // Log error if deployment fails on all clusters
                         echo "Deployment failed on all OpenShift clusters."
+                        }
                     //}
                 }
             }
