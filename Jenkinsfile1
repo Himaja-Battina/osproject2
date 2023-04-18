@@ -16,7 +16,7 @@ pipeline {
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
-                            sh 'exit 1'
+                          
                         }
                         }
                 }
@@ -26,7 +26,7 @@ pipeline {
                     stage('deploy to cluster2'){
                     when{
                        anyOf {
-            environment name: 'DEPLOY_ON_FAILURE', value: 'false'
+            environment name: 'DEPLOY_ON_FAILURE', value: 'true'
         }
         }
                         // Deploy application to OpenShift cluster 2
