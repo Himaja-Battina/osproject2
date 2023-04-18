@@ -36,6 +36,7 @@ pipeline {
                         when{
                             anyOf{
                             failed()
+                            buildingTag()
                             }
                         }
                         // Deploy application to OpenShift cluster 2
