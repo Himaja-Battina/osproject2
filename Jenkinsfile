@@ -9,14 +9,13 @@ pipeline {
                         // Login to OpenShift cluster 1
                         script{
                         // Deploy application to OpenShift cluster 1
-                         def clusterStatus = sh (
-                          script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes',
-                          returnStdout: true,
-                          returnStatus: true
-                    )
-                            echo clusterStatus
+                            def clusterStatusExitCode = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStatus: true)
+def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
+
+                        
+                            echo clusterStatusOutput
                             
-                            if(true){
+                            if(clusterStatusExitCode==0){
                     if (!clusterStatus.contains('NotReady')) {
                         
 
