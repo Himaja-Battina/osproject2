@@ -28,14 +28,16 @@ pipeline {
                           
                         }
                         }
-                }
-            }
+                
+            
             
             else{
          
             echo "Cluster is not ready"
             
             }
+                        }
+                                  }
             }      // Login to OpenShift cluster 2
                         }
                     stage('deploy to cluster2'){
@@ -80,14 +82,3 @@ pipeline {
 
 
 
-
-
-
-
-
-
-
-
-script {
-                   
-                }
