@@ -13,7 +13,7 @@ pipeline {
                             def clusterStatusExitCode = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStatus: true)
 def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
 
-                            }
+                            
                            
                             //authentication success
                             if(clusterStatusExitCode==0){
@@ -81,11 +81,6 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
                         }
                 }
                 }
-                }
             
-
-
-
-
-
-
+        }    }
+            
