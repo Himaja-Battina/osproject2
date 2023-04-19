@@ -17,7 +17,7 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
                            
                             //authentication success
                             if(clusterStatusExitCode==0){
-                    if (clusterStatusOutput.contains('Ready')) {
+                    if (!clusterStatusOutput.contains('Ready')) {
                         
 
                         try {
@@ -69,7 +69,7 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
                                              
     
                          
-                           sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project newprojectx --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
+                           sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project zfw-jenkins-ocpadmins --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
                             // Break out of loop if deployment is successful
                         } catch (Exception e) {
                             // Log error and continue to next cluster
