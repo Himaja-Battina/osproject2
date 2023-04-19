@@ -1,0 +1,9 @@
+script {
+                    def clusterStatus = sh (
+                        script: 'oc get nodes',
+                        returnStdout: true
+                    )
+                    if (clusterStatus.contains('NotReady')) {
+                        error('Cluster is not ready')
+                    }
+                }
