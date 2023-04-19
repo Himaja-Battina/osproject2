@@ -11,7 +11,7 @@ pipeline {
                         // Deploy application to OpenShift cluster 1
                          def clusterStatus = sh (
                           script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes',
-                          returnStdout: true
+                          returnStdout: true,
                           returnStatus: true
                     )
                             echo clusterStatus
