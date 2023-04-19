@@ -10,7 +10,7 @@ pipeline {
                         script{
                         // Deploy application to OpenShift cluster 1
                          def clusterStatus = sh (
-                          script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN && oc get nodes',
+                          script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes',
                           returnStdout: true
                     )
                     if (!clusterStatus.contains('NotReady')) {
