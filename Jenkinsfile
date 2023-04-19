@@ -12,8 +12,10 @@ pipeline {
                          def clusterStatus = sh (
                           script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes',
                           returnStdout: true
+                          returnStatus: true
                     )
                             echo clusterStatus
+                            if(clusterStatus==0){
                     if (!clusterStatus.contains('NotReady')) {
                         
 
@@ -39,6 +41,10 @@ pipeline {
             env.deploy_on_failure = 'true'
             }
                         }
+                        }
+                    else{
+                        echo "authentication failed"
+                    }
                                   }
             }      // Login to OpenShift cluster 2
                         }
