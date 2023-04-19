@@ -16,7 +16,7 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
                             echo clusterStatusOutput
                             
                             if(clusterStatusExitCode==0){
-                    if (!clusterStatus.contains('NotReady')) {
+                    if (!clusterStatusOutput.contains('NotReady')) {
                         
 
                         try {
