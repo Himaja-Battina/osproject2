@@ -68,7 +68,7 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
                         try {
                                              
     
-                         sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 && CLUSTER_NAME=$(oc config current-context | cut -d: -f1) && echo Cluster Name: $CLUSTER_NAME && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 new-project newprojectx --insecure-skip-tls-verify'
+                         
                            sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project newprojectx --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
                             // Break out of loop if deployment is successful
                         } catch (Exception e) {
