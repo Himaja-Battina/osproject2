@@ -24,7 +24,7 @@ pipeline {
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
-                            env.deploy_on_failure = 'true'
+                            
                           
                         }
                         }
@@ -34,7 +34,7 @@ pipeline {
             else{
          
             echo "Cluster is not ready"
-            
+            env.deploy_on_failure = 'true'
             }
                         }
                                   }
