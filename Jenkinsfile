@@ -20,7 +20,7 @@ pipeline {
                         try {
   
 
-                        sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN && CLUSTER_NAME=$(oc config current-context | cut -d: -f1) && echo Cluster Name: $CLUSTER_NAME && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN new-project newprojectg --insecure-skip-tls-verify'
+                        
                             sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN project newprojectg --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
                             // Break out of loop if deployment is successful
                         } catch (Exception e) {
