@@ -14,7 +14,7 @@ pipeline {
                           returnStdout: true
                     )
                             echo clusterStatus
-                    if (!clusterStatus.contains('NotReady')) {
+                    if (!clusterStatus.contains('Ready')) {
                         
 
                         try {
