@@ -41,10 +41,11 @@ pipeline {
             env.deploy_on_failure = 'true'
             }
                         }
-                        }
+                        
                     else{
                         echo "authentication failed"
                     }
+                        }
                                   }
             }      // Login to OpenShift cluster 2
                         }
@@ -80,10 +81,6 @@ pipeline {
                 }
             }
             
-
-
-
-
 
 
 
