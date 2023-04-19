@@ -13,7 +13,7 @@ pipeline {
                           script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes',
                           returnStdout: true
                     )
-                            echo $clusterStatus
+                            echo clusterStatus
                     if (!clusterStatus.contains('NotReady')) {
                         
 
