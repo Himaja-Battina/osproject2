@@ -12,9 +12,8 @@ pipeline {
                             def clusterStatusExitCode = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStatus: true)
 def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
 
-                        
-                            echo clusterStatusOutput
-                            
+                       
+                            //authentication success
                             if(clusterStatusExitCode==0){
                     if (!clusterStatusOutput.contains('NotReady')) {
                         
@@ -41,6 +40,8 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
             env.deploy_on_failure = 'true'
             }
                         }
+                            
+                            //authenitcation failed
                         
                     else{
                         echo "authentication failed"
