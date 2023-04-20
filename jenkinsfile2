@@ -35,7 +35,7 @@ if (clusterStatusOutput.contains('Ready')) {
                         } catch (Exception e) {
                             // Log error and continue to next cluster
                             echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
-                            
+                             
                           
                         }
                         }
