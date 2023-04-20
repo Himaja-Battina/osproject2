@@ -10,7 +10,7 @@ pipeline {
           
 
           def response_code = sh(script: '''curl -k -I -o /dev/null -s -w '%{response_code}' -H "Authorization: Bearer $CLUSTER_AUTH_TOKEN" $OCP_SERVER_URL''', returnStatus: true)
- echo response_code
+ echo response_code+10
           if (response_code == 200) {
          
 def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
