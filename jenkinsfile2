@@ -15,7 +15,7 @@ pipeline {
                         contentType: 'application/json',
                         httpMode: 'GET',
                         headers: [
-                            Authorization: "Bearer ${OCP_TOKEN}"
+                            Authorization: "Bearer $CLUSTER_AUTH_TOKEN"
                         ]
                     )
                     def response_code=response.status
