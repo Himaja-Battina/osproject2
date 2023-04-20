@@ -1,0 +1,40 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Login to OpenShift Cluster') {
+      steps {
+        script {
+          def api_endpoint_url = "<api_endpoint_url>"
+          def username = "<username>"
+          def password = "<password>"
+
+          def response_code = sh(script: "curl -k -I -o /dev/null -s -w '%{response_code}' -u ${username}:${password} ${api_endpoint_url}", returnStatus: true)
+
+          if (response_code == 200) {
+            sh "oc login ${api_endpoint_url} -u ${username} -p ${password} --insecure-skip-tls-verify"
+          } else if (response_code == 401) {
+            error "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
+          } else if (response_code == 503) {
+            error "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
+          } else {
+            error "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
+          }
+        }
+      }
+    }
+
+    stage('Deploy Application to OpenShift Cluster') {
+      steps {
+        script {
+          def app_name = "<app_name>"
+          def image_name = "<image_name>"
+
+          sh "oc new-app ${image_name} --name=${app_name} --allow-missing-imagestream-tags"
+          sh "oc expose svc/${app_name}"
+        }
+      }
+    }
+  }
+}
+
