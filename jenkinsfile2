@@ -10,7 +10,7 @@ pipeline {
           
 
        try{   
-       def response_code = sh(script: "curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer ' + CLUSTER_AUTH_TOKEN + ' ' + OCP_SERVER_URL", returnStatus: true)
+       def response_code = sh(script: "curl -k -I -o /dev/null -s -w '%{response_code}' -H" +'Authorization: Bearer ' + CLUSTER_AUTH_TOKEN + ' ' + OCP_SERVER_URL, returnStatus: true)
         if (response_code == 0) {
             error "Failed to retrieve response code from $OCP_SERVER_URL"
         }
