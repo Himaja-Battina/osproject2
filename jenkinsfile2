@@ -13,7 +13,7 @@ pipeline {
       def url=OCP_SERVER_URL
       def token=CLUSTER_AUTH_TOKEN
       
-         def respose_code=sh 'curl -H "Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM" "https://api.1cld-ocp6.pok.stglabs.ibm.com:6443/apis/user.openshift.io/v1/users/~" --insecure-skip-tls-verify'          
+         def respose_code=sh 'curl -H "Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM" "https://api.1cld-ocp6.pok.stglabs.ibm.com:6443/apis/user.openshift.io/v1/users/~"'          
        //def response_code = sh(script:"curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM' 'https://api.1cld-ocp6.pok.stglabs.ibm.com:6443'",returnStatus: true)
        
         if (response_code == 0) {
