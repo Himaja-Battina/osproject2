@@ -17,6 +17,7 @@ def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUST
                            
                             //authentication success
                             if(clusterStatusExitCode==0){
+                                
                     if (clusterStatusOutput.contains('Ready')) {
                         
 
