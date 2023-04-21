@@ -20,7 +20,7 @@ pipeline {
        try{   
       //def token="sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM"
       //def url="https://api.1cld-ocp6.pok.stglabs.ibm.com:6443"
-      def url = new URL('curl -H "Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM" "https://api.1cld-ocp6.pok.stglabs.ibm.com:6443/apis/user.openshift.io/v1/users/~"'
+      def url = new URL('curl -H "Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM" "https://api.1cld-ocp6.pok.stglabs.ibm.com:6443/apis/user.openshift.io/v1/users/~"')
 def connection = url.openConnection() as HttpURLConnection
 connection.setRequestMethod("GET")
 def response_code = connection.getResponseCode()
