@@ -6,7 +6,7 @@ pipeline {
         withCredentials([string(credentialsId: 'ocp-server-url', variable: 'OCP_SERVER_URL'),
                                   string(credentialsId: 'cluster-auth-token', variable: 'CLUSTER_AUTH_TOKEN')]){
         script {
-          def response_code = sh(script: "curl -k -I -o  -s -w '%{response_code}' -H 'Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM' https://api.1cld-ocp6.pok.stglabs.ibm.com:6443", returnStatus: true)
+          def response_code = sh(script: "curl -k -I -o -w '%{response_code}' -H 'Authorization: Bearer sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM' https://api.1cld-ocp6.pok.stglabs.ibm.com:6443", returnStatus: true)
           if (response_code == 200) {
 def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
 if (clusterStatusOutput.contains('Ready')) {
