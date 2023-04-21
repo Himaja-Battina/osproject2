@@ -8,11 +8,11 @@ pipeline {
         script {
           def responseCode = sh(
                         script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN',
-                        returnStatus: true
-                    )
+                        returnStdout: true
+                    ).trim()
                     echo "hi "
                     
-                    if (responseCode == 0) {
+                    if (responseCode == "0") {
                     echo responseCode
                     echo "bye"
                        def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
@@ -33,13 +33,13 @@ if (clusterStatusOutput.contains('Ready')) {
 
 
 
-                    } else if (responseCode == 401) {
+                    } else if (responseCode == "401") {
                         println "Authentication error: Invalid or expired token"
-                    } else if (responseCode == 403) {
+                    } else if (responseCode == "403") {
                         println "Authorization error: User does not have permission to perform the operation"
-                    } else if (responseCode == 404) {
+                    } else if (responseCode == "404") {
                         println "OpenShift cluster error: Server URL is incorrect or the cluster is not available"
-                    } else if (responseCode == 503) {
+                    } else if (responseCode == "503") {
                          error "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
              echo "Cluster is not ready"
             env.deploy_on_failure = 'true'
