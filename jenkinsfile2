@@ -21,7 +21,7 @@ pipeline {
       //def token="sha256~pX_cUctyGLnmxdO3FVAniiQXKCq65piEZYQEApaA2bM"
       //def url="https://api.1cld-ocp6.pok.stglabs.ibm.com:6443"
      def url = new URL("https://api.1cld-ocp6.pok.stglabs.ibm.com:6443");
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
         // Set the request method and add the Authorization header
         con.setRequestMethod("GET");
