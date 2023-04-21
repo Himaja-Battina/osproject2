@@ -10,6 +10,8 @@ pipeline {
                         script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN',
                         returnStatus: true
                     )
+                    echo "hi "
+                    echo responseCode
                     if (responseCode == 0) {
                        def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
 if (clusterStatusOutput.contains('Ready')) {
