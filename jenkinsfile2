@@ -23,7 +23,7 @@ if (clusterStatusOutput.contains('Ready')) {
             env.deploy_on_failure = 'true'
             }
           }
-          else if(respose_code==404){
+          else if(respose_code == 404){
           error "incorrcet url"
           }
            else if (response_code == 401) {
