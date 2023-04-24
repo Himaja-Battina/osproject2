@@ -1,70 +1,67 @@
-
-
 pipeline {
   agent any
+  environment {
+    OCP_SERVER_URL = credentials('ocp-server-url')
+    CLUSTER_AUTH_TOKEN = credentials('cluster-auth-token')
+    OPENSHIFT_CLUSTER_URL_2 = credentials('openshift-cluster-url-2')
+    OPENSHIFT_CLUSTER_TOKEN_2 = credentials('openshift-cluster-token-2')
+  }
   stages {
     stage('Login to OpenShift Cluster') {
       steps {
-        withCredentials([string(credentialsId: 'ocp-server-url', variable: 'OCP_SERVER_URL'),
-                                  string(credentialsId: 'cluster-auth-token', variable: 'CLUSTER_AUTH_TOKEN')]){
         script {
-        node{
-          def response_code = sh(script: """curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer $CLUSTER_AUTH_TOKEN' $OCP_SERVER_URL""", returnStatus: true)
-          }
-          if (response_code == 200) {
-def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
-if (clusterStatusOutput.contains('Ready')) {
-                        try {
-                            sh 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN project newprojectg --insecure-skip-tls-verify && oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
-                            // Break out of loop if deployment is successful
-                        } catch (Exception e) {
-                            // Log error and continue to next cluster
-                            echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
-                        }
-                        }
-            else{
-            echo "Cluster is not ready"
-            env.deploy_on_failure = 'true'
+          node {
+            def response_code = sh(script: """curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer ${env.CLUSTER_AUTH_TOKEN}' ${env.OCP_SERVER_URL}""", returnStatus: true)
+            if (response_code == 200) {
+              def clusterStatusOutput = sh(script: 'oc --server=${env.OCP_SERVER_URL} --token=${env.CLUSTER_AUTH_TOKEN} get nodes', returnStdout: true)
+              if (clusterStatusOutput.contains('Ready')) {
+                try {
+                  sh 'oc --server=${env.OCP_SERVER_URL} --token=${env.CLUSTER_AUTH_TOKEN} project newprojectg --insecure-skip-tls-verify && oc --server=${env.OCP_SERVER_URL} --token=${env.CLUSTER_AUTH_TOKEN} apply -f application-deployment.yaml'
+                  // Break out of loop if deployment is successful
+                } catch (Exception e) {
+                  // Log error and continue to next cluster
+                  echo "Deployment failed on OpenShift cluster 1. Error: ${e}"
+                }
+              }
+              else{
+                echo "Cluster is not ready"
+                env.deploy_on_failure = 'true'
+              }
             }
-          }
-          else if(response_code == 404){
-          error "incorrcet url"
-          }
-           else if (response_code == 401) {
-            error "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
-          } else if (response_code == 503) {
-            error "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
-             echo "Cluster is not ready"
-            env.deploy_on_failure = 'true'
-          } else {
-            error "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
+            else if(response_code == 404){
+              error "incorrect URL"
+            }
+            else if (response_code == 401) {
+              error "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
+            } else if (response_code == 503) {
+              error "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
+              echo "Cluster is not ready"
+              env.deploy_on_failure = 'true'
+            } else {
+              error "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
+            }
           }
         }
       }
     }
+    stage('Deploy to cluster 2'){
+      when {
+        environment name: 'DEPLOY_ON_FAILURE', value: 'true'
+      }
+      steps {
+        script {
+          node {
+            try {
+              sh 'oc --server=${env.OPENSHIFT_CLUSTER_URL_2} --token=${env.OPENSHIFT_CLUSTER_TOKEN_2} project zfw-jenkins-ocpadmins --insecure-skip-tls-verify && oc --server=${env.OPENSHIFT_CLUSTER_URL_2} --token=${env.OPENSHIFT_CLUSTER_TOKEN_2} apply -f application-deployment.yaml'
+              // Break out of loop if deployment is successful
+            } catch (Exception e) {
+              // Log error and continue to next cluster
+              echo "Deployment failed on OpenShift cluster 2. Error: ${e}"
+            }
+            // Log error if deployment fails on all clusters
+          }
+        }
+      }
     }
- stage('deploy to cluster2'){
-                    when{
-                       anyOf {
-            environment name: 'DEPLOY_ON_FAILURE', value: 'true'
-        }
-        }
-                        // Deploy application to OpenShift cluster 2
-                        steps{
-                                  withCredentials([string(credentialsId: 'openshift-cluster-url-2', variable: 'OPENSHIFT_CLUSTER_URL_2'),
-                                  string(credentialsId: 'openshift-cluster-token-2', variable: 'OPENSHIFT_CLUSTER_TOKEN_2')]) {
-                            script{
-                        try {
-                           sh 'oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 project zfw-jenkins-ocpadmins --insecure-skip-tls-verify && oc --server=$OPENSHIFT_CLUSTER_URL_2 --token=$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
-                            // Break out of loop if deployment is successful
-                        } catch (Exception e) {
-                            // Log error and continue to next cluster
-                            echo "Deployment failed on OpenShift cluster 2. Error: ${e}"
-                        }
-                        // Log error if deployment fails on all clusters
-                        }
-                        }
-                }
-                }
   }
 }
