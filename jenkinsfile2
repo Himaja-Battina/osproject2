@@ -1,3 +1,19 @@
+grant {
+    permission java.security.AllPermission;
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "run";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "classLoader";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "sourceAccess";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "packageAccess";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyMethods";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyProperties";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyStaticMethods";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyStaticProperties";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyFieldAccess";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyClosures";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyCategories";
+    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyScript";
+}
+
 pipeline {
   agent any
   stages {
