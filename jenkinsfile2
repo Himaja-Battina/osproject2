@@ -1,18 +1,4 @@
-grant {
-    permission java.security.AllPermission;
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "run";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "classLoader";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "sourceAccess";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "packageAccess";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyMethods";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyProperties";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyStaticMethods";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyStaticProperties";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyFieldAccess";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyClosures";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyCategories";
-    permission groovy.security.GroovyCodeSourcePermission "*.*", "groovyScript";
-}
+
 
 pipeline {
   agent any
@@ -22,8 +8,9 @@ pipeline {
         withCredentials([string(credentialsId: 'ocp-server-url', variable: 'OCP_SERVER_URL'),
                                   string(credentialsId: 'cluster-auth-token', variable: 'CLUSTER_AUTH_TOKEN')]){
         script {
+        sandbox{
           def response_code = sh(script: "curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer $CLUSTER_AUTH_TOKEN' $OCP_SERVER_URL", returnStatus: true)
-          if (response_code == 200) {
+          } if (response_code == 200) {
 def clusterStatusOutput = sh(script: 'oc --server=$OCP_SERVER_URL --token=$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
 if (clusterStatusOutput.contains('Ready')) {
                         try {
