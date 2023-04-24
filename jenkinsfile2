@@ -8,7 +8,7 @@ pipeline {
         withCredentials([string(credentialsId: 'ocp-server-url', variable: 'OCP_SERVER_URL'),
                                   string(credentialsId: 'cluster-auth-token', variable: 'CLUSTER_AUTH_TOKEN')]){
         script {
-        sandbox{
+        node{
           def response_code = sh(script: "curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer $CLUSTER_AUTH_TOKEN' $OCP_SERVER_URL", returnStatus: true)
           }
           if (response_code == 200) {
