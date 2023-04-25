@@ -12,7 +12,7 @@ pipeline {
         script {
           node {
             def response_code = sh(script: """curl -k -I -s -w '%{response_code}' -H 'Authorization: Bearer \$CLUSTER_AUTH_TOKEN' \$OCP_SERVER_URL""", returnStatus: true)
-            if (response_code == 200) {
+            if (response_code == 200 || response_code=="200") {
               def clusterStatusOutput = sh(script: 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
               if (clusterStatusOutput.contains('Ready')) {
                 try {
@@ -28,12 +28,12 @@ pipeline {
                 env.deploy_on_failure = 'true'
               }
             }
-            else if(response_code == 404){
+            else if(response_code == 404 || response_code="404"){
               error "incorrect URL"
             }
-            else if (response_code == 401) {
+            else if (response_code == 401 || response_code="401") {
               error "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
-            } else if (response_code == 503) {
+            } else if (response_code == 503 || response_code="503") {
               error "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
               echo "Cluster is not ready"
               env.deploy_on_failure = 'true'
