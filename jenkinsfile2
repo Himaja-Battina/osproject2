@@ -63,7 +63,7 @@ if(response_code!=null){
       }
     
    
-
+    }
     stage('Deploy to cluster 2'){
       when {
         environment name: 'DEPLOY_ON_FAILURE', value: 'true'
@@ -83,6 +83,6 @@ if(response_code!=null){
         }
       }
     }
-  }
+  
 	}
 }
