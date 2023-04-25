@@ -73,7 +73,7 @@ if(response_code!=null){
       }
       steps {
         script {
-          node {
+          
             try {
               sh 'oc --server=\$OPENSHIFT_CLUSTER_URL_2 --token=\$OPENSHIFT_CLUSTER_TOKEN_2 project zfw-jenkins-ocpadmins --insecure-skip-tls-verify && oc --server=\$OPENSHIFT_CLUSTER_URL_2 --token=\$OPENSHIFT_CLUSTER_TOKEN_2 apply -f application-deployment.yaml'
               // Break out of loop if deployment is successful
@@ -82,7 +82,7 @@ if(response_code!=null){
               echo "Deployment failed on OpenShift cluster 2. Error: ${e}"
             }
             // Log error if deployment fails on all clusters
-          }
+          
         }
       }
     }
