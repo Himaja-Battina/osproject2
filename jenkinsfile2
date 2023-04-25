@@ -11,29 +11,26 @@ pipeline {
     stage('Login to OpenShift Cluster') {
       steps {
         script {
-        def getResponseCode(code) {
-    def match = code =~ /(200|401|404|503)/
-    if (match.find()) {
-        def responseCodeStr = match.group(0)
-        return responseCodeStr.toInteger()
-    } else {
-        return null
-    }
-}
+          def getResponseCode(code) {
+            def match = code =~ /(200|401|404|503)/
+            if (match.find()) {
+                def responseCodeStr = match.group(0)
+                return responseCodeStr.toInteger()
+            } else {
+                return null
+            }
+          }
           
-            def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
-     
+          def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
+          def response_code = getResponseCode(code)
 
+          if (response_code != null) {
+            println "Response code: ${response_code}"
+            if(response_code==200){
+              println "hi"
+            }
 
-def response_code = getResponseCode(code)
-if (response_code != null) {
-    println "Response code: ${response_code}"
-    if(response_code==200){
-        println "hi"
-    
-    }
-
- if (response_code == 200 || response_code=="200") {
+            if (response_code == 200 || response_code=="200") {
               def clusterStatusOutput = sh(script: 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
               if (clusterStatusOutput.contains('Ready')) {
                 try {
@@ -61,21 +58,14 @@ if (response_code != null) {
             } else {
               error "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
             }
-
-
-
-
-    
-}
-else {
-    println "No matching response codes found"
-}
-    
-           
-          
+          } else {
+            println "No matching response codes found"
+          }
         }
       }
     }
+   
+
     stage('Deploy to cluster 2'){
       when {
         environment name: 'DEPLOY_ON_FAILURE', value: 'true'
