@@ -11,12 +11,12 @@ pipeline {
       steps {
         script {
           
-            def response_code = sh(script: """curl -L -k -I -s -w '%{response_code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
-            def matches = response_code =~ /(200|401|404|503)/
+            def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
+            def matches = code =~ /(200|401|404|503)/
 if (matches) {
     for (match in matches) {
-        def code = match[0].toInteger()
-        println "Response code: ${code}"
+        def response_code = match[0].toInteger()
+        println "Response code: ${response_code}"
         if (response_code==200){
         println "hi"
     }
