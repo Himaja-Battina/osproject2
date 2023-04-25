@@ -20,7 +20,9 @@ if (matches) {
         if (response_code==200){
         println "hi"
     }
-} else {
+    }
+}
+else {
     println "No matching response codes found"
 }
     
@@ -52,7 +54,7 @@ if (matches) {
             } else {
               error "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
             }
-          }
+          
         }
       }
     }
