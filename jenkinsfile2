@@ -14,10 +14,11 @@ pipeline {
         script {
          
           
-          def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
-          
+          //def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
+          def codeOutput = sh(script: """curl -L -k -I -s -w '\\n%{http_code}\\n' -H 'Authorization: Bearer ${CLUSTER_AUTH_TOKEN}' ${OCP_SERVER_URL}""", returnStdout: true).trim()
+def response_code = codeOutput.tokenize('\n')[-1].toInteger()
 
-            def match = code =~ /(200|401|404|503)/
+            /*def match = code =~ /(200|401|404|503)/
             if (match.find()) {
                 def responseCodeStr = match.group(0)
                 response_code=responseCodeStr.toInteger()
@@ -25,7 +26,7 @@ pipeline {
             println "Response code: ${response_code}"
             if(response_code==200){
               println "hi"
-            }
+            }*/
 
             if (response_code == 200 || response_code=="200") {
               def clusterStatusOutput = sh(script: 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
