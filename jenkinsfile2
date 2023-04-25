@@ -43,16 +43,16 @@ if(response_code!=null){
               }
             }
             else if(response_code == 404 || response_code=="404"){
-              error "incorrect URL"
+              echo "incorrect URL"
             }
             else if (response_code == 401 || response_code=="401") {
-              error "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
+              echo "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
             } else if (response_code == 503 || response_code=="503") {
               echo "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
               echo "Cluster is not ready"
               env.deploy_on_failure = 'true'
             } else {
-              error "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
+              echo "Failed to login to OpenShift cluster. HTTP response code: ${response_code}"
             }
           } else {
             println "No matching response codes found"
@@ -60,7 +60,7 @@ if(response_code!=null){
 	  }
 	  }
 	  catch(Exception e){
-	  println "incorrect url"
+	  println "incorrect url 401"
 	  }
         }
       }
