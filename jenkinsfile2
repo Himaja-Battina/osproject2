@@ -14,6 +14,7 @@ pipeline {
             def response_code = sh(script: """curl -L -k -I -s -w '%{response_code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
             def match = response_code =~ /\d+/
 if (match) {
+println match
     def code = match[0].toInteger()
     println "Response hello code: ${code}"
 } else {
