@@ -20,8 +20,7 @@ pipeline {
 	
 def response_code = codeOutput.tokenize('\n')[-1].toInteger()
 //def response_code=503
-            println "hello "
-	    println response_code
+            
             
 if(response_code!=null){
             if (response_code == 200 || response_code=="200") {
