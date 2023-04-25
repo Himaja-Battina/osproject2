@@ -10,7 +10,7 @@ pipeline {
     stage('Login to OpenShift Cluster') {
       steps {
         script {
-          node {
+          
             def response_code = sh(script: """curl -L -k -I -s -w '%{response_code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
             def matches = response_code =~ /(200|401|404|503)/
 if (matches) {
@@ -18,6 +18,7 @@ if (matches) {
         def code = match[0].toInteger()
         println "Response code: ${code}"
         if (response_code==200){
+        println "hi"
     }
 } else {
     println "No matching response codes found"
