@@ -12,6 +12,7 @@ pipeline {
     stage('Login to OpenShift Cluster') {
       steps {
         script {
+	try{
                   //def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
          def codeOutput = sh(script: """curl -L -k -I -s -w '\\n%{http_code}\\n' -H 'Authorization: Bearer ${CLUSTER_AUTH_TOKEN}' ${OCP_SERVER_URL}""", returnStdout: true).trim()
 	
@@ -56,6 +57,10 @@ if(response_code!=null){
           } else {
             println "No matching response codes found"
           
+	  }
+	  }
+	  catch(Exception e){
+	  println "incorrect url"
 	  }
         }
       }
