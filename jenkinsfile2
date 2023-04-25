@@ -6,7 +6,12 @@ pipeline {
     OPENSHIFT_CLUSTER_URL_2 = credentials('openshift-cluster-url-2')
     OPENSHIFT_CLUSTER_TOKEN_2 = credentials('openshift-cluster-token-2')
   }
-   def getResponseCode(code) {
+   
+  stages {
+    stage('Login to OpenShift Cluster') {
+      steps {
+        script {
+        def getResponseCode(code) {
     def match = code =~ /(200|401|404|503)/
     if (match.find()) {
         def responseCodeStr = match.group(0)
@@ -15,10 +20,6 @@ pipeline {
         return null
     }
 }
-  stages {
-    stage('Login to OpenShift Cluster') {
-      steps {
-        script {
           
             def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
      
