@@ -60,7 +60,7 @@ if(response_code!=null){
 	  }
 	  }
 	  catch(Exception e){
-	  println "incorrect url 401"
+	  println "incorrect url 404"
 	  }
         }
       }
