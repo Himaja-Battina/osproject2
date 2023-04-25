@@ -11,7 +11,7 @@ pipeline {
       steps {
         script {
           node {
-            def response_code = sh(script: """curl -k -I -o /dev/null -s -w '%{response_code}' -H 'Authorization: Bearer \$CLUSTER_AUTH_TOKEN' \$OCP_SERVER_URL""", returnStatus: true)
+            def response_code = sh(script: """curl -k -I -s -w '%{response_code}' -H 'Authorization: Bearer \$CLUSTER_AUTH_TOKEN' \$OCP_SERVER_URL""", returnStatus: true)
             if (response_code == 200) {
               def clusterStatusOutput = sh(script: 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
               if (clusterStatusOutput.contains('Ready')) {
