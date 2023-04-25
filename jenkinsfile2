@@ -48,7 +48,7 @@ if(response_code!=null){
             else if (response_code == 401 || response_code=="401") {
               error "Failed to login to OpenShift cluster. Authentication failed. HTTP response code: ${response_code}"
             } else if (response_code == 503 || response_code=="503") {
-              error "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
+              echo "Failed to login to OpenShift cluster. Cluster is down. HTTP response code: ${response_code}"
               echo "Cluster is not ready"
               env.deploy_on_failure = 'true'
             } else {
