@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent OpenShiftOnZ
   environment {
     OCP_SERVER_URL = credentials('ocp-server-url')
     CLUSTER_AUTH_TOKEN = credentials('cluster-auth-token')
