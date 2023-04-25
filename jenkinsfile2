@@ -17,6 +17,7 @@ if (matches) {
     for (match in matches) {
         def code = match[0].toInteger()
         println "Response code: ${code}"
+        if (response_code==200){
     }
 } else {
     println "No matching response codes found"
