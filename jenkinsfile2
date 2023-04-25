@@ -11,7 +11,7 @@ pipeline {
       steps {
         script {
           
-            def code = sh(script: """curl -L -k -I -s -w '%{response_code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
+            def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
             def matches = code =~ /(200|401|404|503)/
 if (matches) {
     for (match in matches) {
