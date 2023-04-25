@@ -29,7 +29,7 @@ if(response_code!=null){
 	    
               println "cluster is available"
             
-              def clusterStatusOutput = sh(script: 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN get nodes', returnStdout: true)
+              def clusterStatusOutput = sh(script: 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN get nodes --insecure-skip-tls-verify', returnStdout: true)
               if (clusterStatusOutput.contains('Ready')) {
                 try {
                   sh 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN project newprojectg --insecure-skip-tls-verify && oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
