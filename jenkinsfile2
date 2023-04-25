@@ -1,3 +1,19 @@
+import groovy.transform.NonCPS
+
+@NonCPS
+def getResponseCode(code) {
+  def match = code =~ /(200|401|404|503)/
+  if (match.find()) {
+    def responseCodeStr = match.group(0)
+    return responseCodeStr.toInteger()
+  } else {
+    return null
+  }
+}
+
+
+
+
 pipeline {
   agent any
   environment {
@@ -15,14 +31,10 @@ pipeline {
          
           
           def code = sh(script: """curl -L -k -I -s -w '%{code}' -H 'Authorization: Bearer sha256~g06oXjlYZeJML0lz4_NDx5RGF8IAnyNFn90VtBsDiVg' \$OCP_SERVER_URL""", returnStdout: true)
-          
-
-            def match = code =~ /(200|401|404|503)/
-            if (match.find()) {
-                def responseCodeStr = match.group(0)
-                response_code=responseCodeStr.toInteger()
-            
-            println "Response code: ${response_code}"
+         
+          def response_code = getResponseCode(code)
+if (response_code!=null){
+           
             if(response_code==200){
               println "hi"
             }
