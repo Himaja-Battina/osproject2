@@ -11,7 +11,7 @@ pipeline {
    
           
   stages {
-    stage('Login to OpenShift Cluster') {
+    stage('Deploy to cluster-1 one cloud') {
       steps {
         script {
 	try{
@@ -66,7 +66,7 @@ if(response_code!=null){
     
    
     }
-    stage('Deploy to cluster 2'){
+    stage('Deploy to cluster 2 pok'){
       when {
         environment name: 'DEPLOY_ON_FAILURE', value: 'true'
       }
