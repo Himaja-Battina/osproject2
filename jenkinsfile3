@@ -32,7 +32,7 @@ if(response_code!=null){
              
             
                 try {
-                  sh 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN project newprojectg --insecure-skip-tls-verify && oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
+                  sh 'oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN project zfw-jenkins-ocpadmins --insecure-skip-tls-verify && oc --server=\$OCP_SERVER_URL --token=\$CLUSTER_AUTH_TOKEN apply -f application-deployment.yaml'
                   // Break out of loop if deployment is successful
                 } catch (Exception e) {
                   // Log error and continue to next cluster
